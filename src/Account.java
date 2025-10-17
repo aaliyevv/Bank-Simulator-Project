@@ -40,3 +40,44 @@ public class Account {
         balances.put(currency, old + amount);
     }
 
+    public synchronized boolean withdraw(Currency currency, double amount) {
+        double old = balances.getOrDefault(currency, 0.0);
+        if (old >= amount) {
+            balances.put(currency, old - amount);
+            return true;
+        }
+        return false;
+    }
+
+    public synchronized Map<Currency, Double> snapshotBalances() {
+
+        return new EnumMap<>(balances);
+    }
+
+    public boolean verifyPin(int candidatePin) {
+
+        return Objects.equals(this.pin, Integer.valueOf(candidatePin));
+    }
+
+    public void setPin(int newPin) {
+
+        this.pin = Integer.valueOf(newPin);
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        DecimalFormat fmt = new DecimalFormat("#0.00");
+        sb.append("Account{id=").append(id)
+                .append(", owner='").append(ownerName).append("', balances=");
+        sb.append("{");
+        boolean first = true;
+        for (Currency c : Currency.values()) {
+            if (!first) sb.append(", ");
+            sb.append(c).append(":").append(fmt.format(balances.getOrDefault(c, 0.0)));
+            first = false;
+        }
+        sb.append("}}");
+        return sb.toString();
+    }
+}
