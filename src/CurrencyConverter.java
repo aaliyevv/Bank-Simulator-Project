@@ -17,4 +17,19 @@ public class CurrencyConverter {
 
         return INSTANCE;
     }
+
+    public double convert(double amount, Currency from, Currency to) {
+        if (from == to) return amount;
+        Double fromUsd = toUsdRates.get(from);
+        Double toUsd = toUsdRates.get(to);
+        if (fromUsd == null || toUsd == null) throw new IllegalArgumentException("Unsupported currency");
+        double amountInUsd = amount * fromUsd;
+        double result = amountInUsd / toUsd;
+        return result;
+    }
+
+    public synchronized void updateRate(Currency currency, double toUsd) {
+
+        toUsdRates.put(currency, toUsd);
+    }
 }
