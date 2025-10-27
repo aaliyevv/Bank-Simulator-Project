@@ -51,7 +51,21 @@ public class Main {
                         executor.submit(processor::process);
                     }
                     break;
+                case "save":
+                    System.out.print("Enter output file path to save snapshot: ");
+                    String out = scanner.nextLine().trim();
+                    OutputWriter.dumpSnapshotToFile(out);
+                    break;
+                case "exit":
+                case "quit":
+                    running = false;
+                    break;
+                default:
+                    System.out.println("Unknown command. Type 'menu' to see options.");
             }
         }
+
+        shutdown();
+        System.out.println("Simulator exited. Goodbye!");
     }
 }
