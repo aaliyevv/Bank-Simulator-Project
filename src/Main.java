@@ -13,5 +13,45 @@ public class Main {
         printHelp();
 
         executor.submit(() -> GCMonitor.runGcDemo());
+
+        boolean running = true;
+        while (running) {
+            System.out.print("\nEnter command (menu for options): ");
+            String cmd = scanner.nextLine().trim().toLowerCase();
+            switch (cmd) {
+                case "menu":
+                case "help":
+                    printHelp();
+                    break;
+                case "create":
+                    interactiveCreate();
+                    break;
+                case "list":
+                    manager.printAllAccountsToConsole();
+                    break;
+                case "transfer":
+                    interactiveTransfer();
+                    break;
+                case "history":
+                    manager.printTransactionHistoryToConsole();
+                    break;
+                case "suggest":
+                    SuggestionEngine.suggestForAllAccounts();
+                    break;
+                case "batch":
+                    System.out.print("Enter input file path: ");
+                    String inPath = scanner.nextLine().trim();
+                    System.out.print("Enter output file path: ");
+                    String outPath = scanner.nextLine().trim();
+                    File inFile = new File(inPath);
+                    if (!inFile.exists()) {
+                        System.out.println("Input file does not exist.");
+                    } else {
+                        InputProcessor processor = new InputProcessor(inFile, outPath, executor);
+                        executor.submit(processor::process);
+                    }
+                    break;
+            }
+        }
     }
 }
