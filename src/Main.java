@@ -79,4 +79,22 @@ public class Main {
         System.out.println("  save     - Save accounts and transactions snapshot to output file");
         System.out.println("  exit     - Exit application");
     }
+    private static void interactiveCreate() {
+        System.out.print("Enter owner name: ");
+        String name = scanner.nextLine().trim();
+        System.out.print("Enter initial currency (USD, EUR, AZN, GBP): ");
+        String cur = scanner.nextLine().trim().toUpperCase();
+        Currency currency;
+        try {
+            currency = Currency.valueOf(cur);
+        } catch (Exception e) {
+            System.out.println("Invalid currency. Defaulting to USD.");
+            currency = Currency.USD;
+        }
+        System.out.print("Enter initial amount: ");
+        double amount = Double.parseDouble(scanner.nextLine().trim());
+        System.out.print("Set numeric PIN (4 digits): ");
+        int pin = Integer.parseInt(scanner.nextLine().trim());
+
+    }
 }
