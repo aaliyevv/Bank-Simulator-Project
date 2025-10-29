@@ -68,4 +68,15 @@ public class Main {
         shutdown();
         System.out.println("Simulator exited. Goodbye!");
     }
+    private static void printHelp() {
+        System.out.println("Commands:");
+        System.out.println("  create   - Create a new account");
+        System.out.println("  list     - List all accounts");
+        System.out.println("  transfer - Transfer between accounts");
+        System.out.println("  history  - Show transaction history");
+        System.out.println("  suggest  - Show savings/investment suggestions");
+        System.out.println("  batch    - Process batch commands from input file");
+        System.out.println("  save     - Save accounts and transactions snapshot to output file");
+        System.out.println("  exit     - Exit application");
+    }
 }
