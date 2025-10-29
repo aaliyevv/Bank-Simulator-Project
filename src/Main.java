@@ -121,6 +121,15 @@ public class Main {
                 if (ok) System.out.println("Transfer thread completed successfully.");
                 else System.out.println("Transfer thread failed.");
             });
+
+        } catch (Exception e) {
+            System.out.println("Invalid input: " + e.getMessage());
         }
+    }
+
+    private static void shutdown() {
+        executor.shutdownNow();
+        OutputWriter.setDefaultOutputFile("bank_snapshot.txt");
+        OutputWriter.dumpSnapshotToFile(OutputWriter.getDefaultOutputFile());
     }
 }
