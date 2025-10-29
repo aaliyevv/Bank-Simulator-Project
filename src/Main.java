@@ -68,6 +68,7 @@ public class Main {
         shutdown();
         System.out.println("Simulator exited. Goodbye!");
     }
+
     private static void printHelp() {
         System.out.println("Commands:");
         System.out.println("  create   - Create a new account");
@@ -79,6 +80,7 @@ public class Main {
         System.out.println("  save     - Save accounts and transactions snapshot to output file");
         System.out.println("  exit     - Exit application");
     }
+
     private static void interactiveCreate() {
         System.out.print("Enter owner name: ");
         String name = scanner.nextLine().trim();
@@ -96,5 +98,29 @@ public class Main {
         System.out.print("Set numeric PIN (4 digits): ");
         int pin = Integer.parseInt(scanner.nextLine().trim());
 
+        Account acc = manager.createAccount(name, currency, amount, pin);
+        System.out.println("Account created: " + acc);
+    }
+
+    private static void interactiveTransfer() {
+        try {
+            System.out.print("From Account ID: ");
+            int from = Integer.parseInt(scanner.nextLine().trim());
+            System.out.print("To Account ID: ");
+            int to = Integer.parseInt(scanner.nextLine().trim());
+            System.out.print("Amount: ");
+            double amt = Double.parseDouble(scanner.nextLine().trim());
+            System.out.print("Currency of amount (USD, EUR, AZN, GBP): ");
+            Currency c = Currency.valueOf(scanner.nextLine().trim().toUpperCase());
+
+            System.out.print("Enter PIN for account " + from + ": ");
+            int pin = Integer.parseInt(scanner.nextLine().trim());
+
+            executor.submit(() -> {
+                boolean ok = manager.verifyPinAndTransfer(from, pin, to, amt, c);
+                if (ok) System.out.println("Transfer thread completed successfully.");
+                else System.out.println("Transfer thread failed.");
+            });
+        }
     }
 }
